@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Elija una de las siguientes opciones</title>
+</head>
+<body>
+    <h1>Carniceria</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="carne">Seleccione un tipo de carne:</label>
+        <select name="carne" id="carne">
+            <option value="vacio">Vacio</option>
+            <option value="tira de asado">Tira de Asado</option>
+            <option value="chorizo">Chorizo</option>
+        </select>
+        <br>
+        <label for="carniceria">Seleccione un peso:</label>
+        <select name="peso" id="peso">
+            <option value="kg">Kilogramos</option>
+            <option value="gramo">Gramos</option>
+        </select>
+        <br>
+        <label for="cantidad">Ingrese la cantidad:</label>
+        <input type="number" name="cantidad" id="cantidad" min="1" required>
+        <br>
+        <button type="submit">Agregar al carrito</button>
+    </form>
+<a  href="{% url 'app1:menu' %}" class="btn btn-secondary">Volver</a>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Elija una de las siguientes opciones</title>
+</head>
+<body>
+    <h1>Mercado de Frutas</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="fruta">Seleccione una fruta:</label>
+        <select name="fruta" id="fruta">
+            <option value="manzana">Manzana</option>
+            <option value="naranja">Naranja</option>
+            <option value="pera">Pera</option>
+        </select>
+        <br>
+        <label for="fruta">Seleccione un peso:</label>
+        <select name="peso" id="peso">
+            <option value="kg">Kilogramos</option>
+            <option value="gramo">Gramos</option>
+        </select>
+        <br>
+        <label for="cantidad">Ingrese la cantidad:</label>
+        <input type="number" name="cantidad" id="cantidad" min="1" required>
+        <br>
+        <button type="submit">Comprar</button>
+    </form>
+<a  href="{% url 'app1:menu' %}" class="btn btn-secondary">Volver</a>
+</body>
+</html>
+{% endblock %}

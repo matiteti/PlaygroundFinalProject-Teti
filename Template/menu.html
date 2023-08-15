@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de usuarios</title>
+</head>
+<body>
+<body>
+    <nav class="navbar navbar-light bg-light static-top"></nav>
+    <div class="container">
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-primary" href="{% url 'app1:intro' %}">Cerrar Sesion</a>
+        </div>
+    </div>
+    <h1>Seleccione una de las opciones</h1>
+    <form method="post">
+        {% csrf_token %}
+        <a  href="{% url 'app1:fruta' %}" class="btn btn-secondary">Fruteria</a>
+        <a  href="{% url 'app1:carniceria' %}" class="btn btn-secondary">Carniceria</a>
+        <a  href="{% url 'app1:panaderia' %}" class="btn btn-secondary">Panaderia</a>
+    </form>
+    <br>
+    
+</body>
+</html>
+{% endblock %}

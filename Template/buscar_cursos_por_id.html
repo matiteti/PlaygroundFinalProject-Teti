@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buscar Cursos por Nombre</title>
+</head>
+<body>
+    <h1>Buscar Cursos por Nombre</h1>
+    <form method="get" action="">
+        {{ form.as_p }}
+        <button type="submit">Buscar</button>
+    </form>
+    
+    {% if elementos %}
+    <h2>Resultados de la búsqueda:</h2>
+    <ul>
+        {% for e in elementos %}
+        <li> {{ e.id }} </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

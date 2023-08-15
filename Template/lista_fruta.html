@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Última Compra de Fruta</title>
+</head>
+<body>
+    <h1>Última Compra de Fruta</h1>
+    <ul>
+        <li>Fruta: {{ compra_fruta.fruta }}</li>
+        <li>Cantidad: {{ compra_fruta.cantidad }}</li>
+        <li>Peso: {{ compra_fruta.peso }}</li>
+        <li>Orden de Compra: {{ compra_fruta.id }}</li>
+    </ul>
+    <a href="{% url 'app1:fruta' %}" class="btn btn-secondary">Realizar otra compra</a>
+    <a href="{% url 'app1:lista_fruta' %}" class="btn btn-secondary">Ver todas las compras</a>
+</body>
+</html>
+{% endblock %}
+

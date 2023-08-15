@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mercado MT</title>
+</head>
+<body>
+    <h1>Seleccione una de las opciones</h1>
+    <form method="post">
+        {% csrf_token %}
+        <a  href="{% url 'app1:menu_inicio' %}" class="btn btn-secondary">Loguearse</a>
+        <a  href="{% url 'app1:crear_usuario' %}" class="btn btn-secondary">Crear Usuario</a>
+    </form>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div{% if message.tags %} style="color: green;"{% endif %}>{{ message }}</div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
+{% endblock %}
