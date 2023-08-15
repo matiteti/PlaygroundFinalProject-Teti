@@ -13,5 +13,7 @@ urlpatterns = [
     path('menu/', views.menu, name='menu'),
     path('intro/', views.intro, name='intro'),
     path('crear_usuario/', views.crear_usuario, name='crear_usuario'),
-    path('buscar_cursos_por_id-por-id/', views.buscar_cursos_por_id, name='buscar_cursos_por_id'),
+    path('buscar-por-fruta/', views.buscar_fruta_por_id, name='buscar_fruta_por_id'),
+    path('buscar-por-carne/', views.buscar_carne_por_id, name='buscar_carne_por_id'),
+    path('buscar-por-pan/', views.buscar_pan_por_id, name='buscar_pan_por_id'),
 ]

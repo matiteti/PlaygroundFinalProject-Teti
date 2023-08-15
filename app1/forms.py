@@ -22,4 +22,4 @@ class Panaderiaform(forms.ModelForm):
         fields = '__all__'
 
 class BusquedaForm(forms.Form):
-    id = forms.CharField(required=False)
+    nombre = forms.CharField(required=False)

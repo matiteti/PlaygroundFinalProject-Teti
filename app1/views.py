@@ -83,15 +83,42 @@ def lista_carniceria(request):
     compra_carne = Carniceria.objects.last()  # Obtiene el último registro
     return render(request, 'lista_carniceria.html', {'compra_carne': compra_carne})
 
-def buscar_cursos_por_id(request):
-    form = BusquedaForm(request.GET)
+def buscar_fruta_por_id(request):
     elementos = []
-    
+    form = BusquedaForm(request.GET)
+
     if form.is_valid():
-        id = form.cleaned_data.get('id')
-        
-        if id:
-            elementos = Fruta.objects.filter(id__icontains=id)
-    
-    return render(request, 'app1:buscar_cursos_por_id', {'form': form, 'elementos': elementos})
+        id_busqueda = form.cleaned_data.get('nombre')
+
+        # Realizar la búsqueda en el modelo Curso por nombre
+        if id_busqueda:
+            elementos = Fruta.objects.filter(id=id_busqueda)
+
+    return render(request, 'buscar_fruta.html', {'form': form, 'elementos': elementos})
+
+def buscar_carne_por_id(request):
+    elementos = []
+    form = BusquedaForm(request.GET)
+
+    if form.is_valid():
+        id_busqueda = form.cleaned_data.get('nombre')
+
+        # Realizar la búsqueda en el modelo Curso por nombre
+        if id_busqueda:
+            elementos = Carniceria.objects.filter(id=id_busqueda)
+
+    return render(request, 'buscar_carne.html', {'form': form, 'elementos': elementos})
+
+def buscar_pan_por_id(request):
+    elementos = []
+    form = BusquedaForm(request.GET)
+
+    if form.is_valid():
+        id_busqueda = form.cleaned_data.get('nombre')
+
+        # Realizar la búsqueda en el modelo Curso por nombre
+        if id_busqueda:
+            elementos = Panaderia.objects.filter(id=id_busqueda)
+
+    return render(request, 'buscar_pan.html', {'form': form, 'elementos': elementos})
 
