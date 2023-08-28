@@ -1,5 +1,7 @@
 from django import forms
 from .models import Ingreso,Fruta,Carniceria,Panaderia
+from django.contrib.auth import get_user_model
+
 
 class Ingresoform(forms.ModelForm):
     class Meta:
@@ -23,3 +25,4 @@ class Panaderiaform(forms.ModelForm):
 
 class BusquedaForm(forms.Form):
     nombre = forms.CharField(required=False)
+

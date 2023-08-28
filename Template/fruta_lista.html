@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<h1>Listado de Frutas</h1>
+
+<a href={% url 'NuevaFruta' %}>Nueva Fruta</a>
+{% for fruta in frutas %}
+<li>Nombre: {{fruta.fruta}}</li>
+    <p>
+        <a href="{% url 'DetalleFruta' fruta.pk %}">Ver</a>
+        |
+        <a href="{% url 'EditarFruta' fruta.pk %}">Editar</a>
+        |
+        <a href="{% url 'BorrarFruta' fruta.pk %}">Borrar</a>
+    
+    </p>
+</li>
+
+{% endfor %}
+{% endblock %} 

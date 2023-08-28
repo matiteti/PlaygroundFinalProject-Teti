@@ -1,14 +1,21 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
 from .models import *
 from django.contrib import messages
 from .forms import *
+from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.urls import reverse_lazy
+
+
 
 
 # Create your views here.
-
+@login_required
 def index(request):
     return render(request, 'index.html')
+
 
 def intro(request):
     return render(request, 'intro.html')
@@ -35,23 +42,58 @@ def menu_inicio(request):
 def menu(request):
     return render(request, 'menu.html')
 
-
+@login_required
 def fruta(request):
     if request.method == 'POST':
-        fruta = request.POST.get('fruta')
-        cantidad = request.POST.get('cantidad')
-        peso = request.POST.get('peso')
-        compra_fruta = Fruta(fruta=fruta, cantidad=cantidad, peso=peso)
-        compra_fruta.save()
-        return redirect('app1:lista_fruta')
-
+        mi_formulario = Frutaform(request.POST)
+        if mi_formulario.is_valid():
+            informacion = mi_formulario.cleaned_data
+            fruta = Fruta(fruta=informacion['fruta'], cantidad=informacion['cantidad'], peso=informacion['peso'])
+            fruta.save()
+            return redirect('app1:leer_fruta')
+        else:
+            mi_formulario = Frutaform()
+        return render(request, 'fruta.html', {'mi_formulario': mi_formulario})
+    
     return render(request, 'fruta.html')
 
-def lista_fruta(request):
+
+def leer_fruta(request):
     compra_fruta = Fruta.objects.last()  # Obtiene el último registro
-    return render(request, 'lista_fruta.html', {'compra_fruta': compra_fruta})
+    return render(request, 'leer_fruta.html', {'compra_fruta': compra_fruta})
 
 
+def eliminar_fruta(request, fruta_id):
+    fruta = Fruta.objects.get(pk=fruta_id)
+    fruta.delete()
+    messages.success(request, 'Se ha eliminado la compra.')
+    return redirect('app1:fruta')
+
+
+def editar_fruta(request, fruta_id):
+    f = Fruta.objects.get(pk=fruta_id)
+    if request.method == "POST":
+        mi_formulario = Frutaform(request.POST)
+
+        print(mi_formulario)
+
+        if mi_formulario.is_valid():
+            informacion = mi_formulario.cleaned_data
+
+            f.fruta = informacion['fruta']
+            f.peso = informacion['peso']
+            f.cantidad = informacion['cantidad']
+
+            f.save()
+
+            return redirect('app1:leer_fruta')
+        
+    else:
+        mi_formulario = Frutaform(initial={'fruta': f.fruta, 'peso': f.peso, 'cantidad': f.cantidad})
+
+    return render(request, "editar_fruta.html", {"mi_formulario": mi_formulario})
+
+@login_required
 def panaderia(request):
     if request.method == 'POST':
         pan = request.POST.get('pan')
@@ -63,11 +105,12 @@ def panaderia(request):
 
     return render(request, 'panaderia.html')
 
+
 def lista_panaderia(request):
     compra_pan = Panaderia.objects.last()  # Obtiene el último registro
     return render(request, 'lista_panaderia.html', {'compra_pan': compra_pan})
 
-
+@login_required
 def carniceria(request):
     if request.method == 'POST':
         carne = request.POST.get('carne')
@@ -79,9 +122,11 @@ def carniceria(request):
 
     return render(request, 'carniceria.html')
 
+
 def lista_carniceria(request):
     compra_carne = Carniceria.objects.last()  # Obtiene el último registro
     return render(request, 'lista_carniceria.html', {'compra_carne': compra_carne})
+
 
 def buscar_fruta_por_id(request):
     elementos = []
@@ -96,6 +141,7 @@ def buscar_fruta_por_id(request):
 
     return render(request, 'buscar_fruta.html', {'form': form, 'elementos': elementos})
 
+
 def buscar_carne_por_id(request):
     elementos = []
     form = BusquedaForm(request.GET)
@@ -108,6 +154,7 @@ def buscar_carne_por_id(request):
             elementos = Carniceria.objects.filter(id=id_busqueda)
 
     return render(request, 'buscar_carne.html', {'form': form, 'elementos': elementos})
+
 
 def buscar_pan_por_id(request):
     elementos = []
@@ -122,3 +169,30 @@ def buscar_pan_por_id(request):
 
     return render(request, 'buscar_pan.html', {'form': form, 'elementos': elementos})
 
+################################################################################
+class FrutaListView(ListView):
+    model = Fruta
+    context_object_name = "frutas"
+    template_name = "app1/fruta_lista.html"
+
+
+class FrutaDetailView(DetailView):
+    model = Fruta
+    template_name = "app1/fruta_detalle.html"
+
+class FrutaCreateView(CreateView):
+    model = Fruta
+    template_name = "app1/fruta_crear.html"
+    success_url = reverse_lazy("ListaFruta")
+    fields = ["fruta","peso","cantidad"]
+
+class FrutaUpdateView(UpdateView):
+    model = Fruta
+    template_name = "app1/fruta_editar.html"
+    success_url = reverse_lazy("ListaFruta")
+    fields = ["fruta","peso","cantidad"]
+
+class FrutaDeleteView(DeleteView):
+    model = Fruta
+    template_name = "app1/fruta_borrar.html"
+    success_url = reverse_lazy("ListaFruta")
