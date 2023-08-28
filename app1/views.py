@@ -167,36 +167,7 @@ def buscar_pan_por_id(request):
 
     return render(request, 'buscar_pan.html', {'form': form, 'elementos': elementos})
 
-############################  Vistas de Frutas  ####################################################
-class FrutaListView(ListView):
-    model = Fruta
-    context_object_name = "frutas"
-    template_name = "app1/fruta_lista.html"
 
-
-class FrutaDetailView(DetailView):
-    model = Fruta
-    template_name = "app1/fruta_detalle.html"
-
-class FrutaCreateView(CreateView):
-    model = Fruta
-    template_name = "app1/fruta_crear.html"
-    success_url = reverse_lazy("ListaFruta")
-    fields = ["fruta","peso","cantidad"]
-
-class FrutaUpdateView(UpdateView):
-    model = Fruta
-    template_name = "app1/fruta_editar.html"
-    success_url = reverse_lazy("ListaFruta")
-    fields = ["fruta","peso","cantidad"]
-
-class FrutaDeleteView(DeleteView):
-    model = Fruta
-    template_name = "app1/fruta_borrar.html"
-    success_url = reverse_lazy("ListaFruta")
-
-
-############################  Vistas de Carniceria  ####################################################
 
 def leer_carne(request):
     compra_carne = Carniceria.objects.last()  # Obtiene el último registro
@@ -234,34 +205,6 @@ def editar_carne(request, carne_id):
     return render(request, "editar_carne.html", {"mi_formulario": mi_formulario})
 
 
-class CarneListView(ListView):
-    model = Carniceria
-    context_object_name = "carnes"
-    template_name = "app1/carne_lista.html"
-
-
-class CarneDetailView(DetailView):
-    model = Carniceria
-    template_name = "app1/carne_detalle.html"
-
-class CarneCreateView(CreateView):
-    model = Carniceria
-    template_name = "app1/carne_crear.html"
-    success_url = reverse_lazy("ListaCarne")
-    fields = ["carne","peso","cantidad"]
-
-class CarneUpdateView(UpdateView):
-    model = Carniceria
-    template_name = "app1/carne_editar.html"
-    success_url = reverse_lazy("ListaCarne")
-    fields = ["carne","peso","cantidad"]
-
-class CarneDeleteView(DeleteView):
-    model = Carniceria
-    template_name = "app1/carne_borrar.html"
-    success_url = reverse_lazy("ListaCarne")
-
-############################  Vistas de Panaderia  ####################################################
 
 def leer_panaderia(request):
     compra_pan = Panaderia.objects.last()  # Obtiene el último registro
@@ -299,29 +242,3 @@ def editar_pan(request, pan_id):
     return render(request, "editar_pan.html", {"mi_formulario": mi_formulario})
 
 
-class PanListView(ListView):
-    model = Panaderia
-    context_object_name = "panes"
-    template_name = "app1/pan_lista.html"
-
-
-class PanDetailView(DetailView):
-    model = Panaderia
-    template_name = "app1/pan_detalle.html"
-
-class PanCreateView(CreateView):
-    model = Panaderia
-    template_name = "app1/pan_crear.html"
-    success_url = reverse_lazy("ListaPan")
-    fields = ["pan","peso","cantidad"]
-
-class PanUpdateView(UpdateView):
-    model = Panaderia
-    template_name = "app1/pan_editar.html"
-    success_url = reverse_lazy("ListaPan")
-    fields = ["pan","peso","cantidad"]
-
-class PanDeleteView(DeleteView):
-    model = Panaderia
-    template_name = "app1/pan_borrar.html"
-    success_url = reverse_lazy("ListaPan")
