@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<h1>Listado de Panes</h1>
+
+<a href={% url 'NuevoPan' %}>Nuevo Pan</a>
+{% for pan in panes %}
+<li>Nombre: {{pan.pan}}</li>
+    <p>
+        <a href="{% url 'DetallePan' pan.pk %}">Ver</a>
+        |
+        <a href="{% url 'EditarPan' pan.pk %}">Editar</a>
+        |
+        <a href="{% url 'BorrarPan' pan.pk %}">Borrar</a>
+    
+    </p>
+</li>
+
+{% endfor %}
+{% endblock %} 

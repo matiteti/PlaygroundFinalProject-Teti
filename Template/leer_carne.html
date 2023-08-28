@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Última Compra de Carne</title>
+</head>
+<body>
+    <h1>Última Compra de Carne</h1>
+    <ul>
+        <li>Carne: {{ compra_carne.carne }}</li>
+        <li>Cantidad: {{ compra_carne.cantidad }}</li>
+        <li>Peso: {{ compra_carne.peso }}</li>
+        <li>Orden de Compra: {{ compra_carne.id }}</li>
+    </ul>
+    <a href="{% url 'app1:carniceria' %}" class="btn btn-secondary">Realizar otra compra</a>
+    <a href="{% url 'app1:eliminar_carne' compra_carne.id %}" class="btn btn-secondary">Eliminar</a>
+    <a href="{% url 'app1:editar_carne' compra_carne.id %}" class="btn btn-secondary">Editar</a>
+</body>
+</html>
+{% endblock %}
+

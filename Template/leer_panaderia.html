@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Última Compra de Pan</title>
+</head>
+<body>
+    <h1>Última Compra de Pan</h1>
+    <ul>
+        <li>Pan: {{ compra_pan.pan }}</li>
+        <li>Cantidad: {{ compra_pan.cantidad }}</li>
+        <li>Peso: {{ compra_pan.peso }}</li>
+        <li>Orden de Compra: {{ compra_pan.id }}</li>
+    </ul>
+    <a href="{% url 'app1:panaderia' %}" class="btn btn-secondary">Realizar otra compra</a>
+    <a href="{% url 'app1:eliminar_pan' compra_pan.id %}" class="btn btn-secondary">Eliminar</a>
+    <a href="{% url 'app1:editar_pan' compra_pan.id %}" class="btn btn-secondary">Editar</a>
+</body>
+</html>
+{% endblock %}
+

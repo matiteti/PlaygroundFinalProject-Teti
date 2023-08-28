@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<h1>Pan Detalle</h1>
+
+<p>Pan: <i>{{p.pan}}</i></p>
+<p>Peso: <i>{{p.peso}}</i></p>
+<p>Cantidad: <i>{{p.cantidad}}</i></p>
+<p>
+    <a href="{% url 'ListaPan' %}"> Regresar</a>
+</p>
+
+
+
+{% endblock %}
