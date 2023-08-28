@@ -3,9 +3,6 @@ from .models import *
 from django.contrib import messages
 from .forms import *
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 
 
@@ -20,7 +17,7 @@ def index(request):
 def intro(request):
     return render(request, 'intro.html')
 
-def crear_usuario(request):
+def register(request):
     if request.method == 'POST':
         form = Ingresoform(request.POST)
         if form.is_valid():
@@ -29,19 +26,20 @@ def crear_usuario(request):
             return redirect('app1:intro')
     else:
         form = Ingresoform
-    return render(request, 'crear_usuario.html', {'form':form})
+    return render(request, 'register.html', {'form':form})
 
-
-def menu_inicio(request):
+@login_required
+def login(request):
     if request.method == 'POST':
         return redirect('app1:menu')
 
-    return render(request, 'menu_inicio.html')
+    return render(request, 'login.html')
 
-
+@login_required
 def menu(request):
     return render(request, 'menu.html')
 
+@login_required
 def fruta(request):
     if request.method == 'POST':
         mi_formulario = Frutaform(request.POST)
@@ -56,19 +54,19 @@ def fruta(request):
     
     return render(request, 'fruta.html')
 
-
+@login_required
 def leer_fruta(request):
     compra_fruta = Fruta.objects.last()  # Obtiene el último registro
     return render(request, 'leer_fruta.html', {'compra_fruta': compra_fruta})
 
-
+@login_required
 def eliminar_fruta(request, fruta_id):
     fruta = Fruta.objects.get(pk=fruta_id)
     fruta.delete()
     messages.success(request, 'Se ha eliminado la compra.')
     return redirect('app1:fruta')
 
-
+@login_required
 def editar_fruta(request, fruta_id):
     f = Fruta.objects.get(pk=fruta_id)
     if request.method == "POST":
@@ -203,7 +201,6 @@ def editar_carne(request, carne_id):
         mi_formulario = Carniceriaform(initial={'carne': c.carne, 'peso': c.peso, 'cantidad': c.cantidad})
 
     return render(request, "editar_carne.html", {"mi_formulario": mi_formulario})
-
 
 
 def leer_panaderia(request):
