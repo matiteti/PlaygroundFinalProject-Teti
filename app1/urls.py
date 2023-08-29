@@ -22,4 +22,6 @@ urlpatterns = [
     path('editar_pan/<pan_id>/', views.editar_pan, name='editar_pan'),
     path('register/', views.register, name='register'),
     path('login/', views.user_login, name='login'),
+    path('logout/', views.user_logout, name='logout'),
+    path('acerca/', views.acerca, name='acerca'),  
 ]

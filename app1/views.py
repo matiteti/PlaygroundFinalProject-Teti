@@ -2,9 +2,8 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.contrib import messages
 from .forms import *
-from .forms import CustomLoginForm  
 from .forms import CustomUserRegistrationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 
@@ -58,7 +57,9 @@ def user_login(request):
     return render(request, 'login.html', {'form': form})
 
 
-
+def user_logout(request):
+    logout(request)
+    return redirect('blog:index') 
 
 
 
@@ -265,3 +266,5 @@ def editar_pan(request, pan_id):
     return render(request, "editar_pan.html", {"mi_formulario": mi_formulario})
 
 
+def acerca(request):
+    return render(request, 'acerca.html')
