@@ -2,12 +2,12 @@ from django.db import models
 # Create your models here.
 
 class Usuario(models.Model):
-    usuario = models.EmailField()
-    clave = models.CharField(max_length=128)
+    username = models.EmailField()
+    password = models.CharField(max_length=128)
     # Otros campos adicionales que puedas necesitar
 
     def __str__(self):
-        return f"{self.usuario}"
+        return f"{self.username}"
 
 
 class Fruta(models.Model):

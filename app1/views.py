@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.contrib import messages
 from .forms import *
-from django.contrib.auth.decorators import login_required
 from .forms import CustomLoginForm  
 from .forms import CustomUserRegistrationForm
 from django.contrib.auth import authenticate, login
@@ -11,7 +10,7 @@ from django.contrib.auth import authenticate, login
 
 
 # Create your views here.
-@login_required
+
 def index(request):
     return render(request, 'index.html')
 
@@ -23,11 +22,19 @@ def register(request):
     if request.method == 'POST':
         form = CustomUserRegistrationForm(request.POST)
         if form.is_valid():
-            usuario = form.cleaned_data['usuario']
-            clave = form.cleaned_data['clave']
-            # Crea un nuevo usuario en la base de datos
-            usuario = Usuario.objects.create(usuario=usuario, clave=clave)
-            # Realiza cualquier otra acción necesaria
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            # Verifica si ya existe un usuario con el mismo correo electrónico
+            if Usuario.objects.filter(username=username).exists():
+                error_message = "El correo ya se encuentra registrado. Por favor, ingresa otro."
+                return render(request, 'register.html', {'form': form, 'error_message': error_message})
+
+            # Si no existe, crea un nuevo usuario en la base de datos
+            user = Usuario.objects.create(username=username, password=password)
+            user.save()
+            messages.success(request, 'Se ha creado el usuario.')
+
             return redirect('app1:login')  # Redirige a la página de inicio de sesión
     else:
         form = CustomUserRegistrationForm()
@@ -35,30 +42,30 @@ def register(request):
 
 
 
-def custom_login(request):
+
+def user_login(request):
     if request.method == 'POST':
-        form = CustomLoginForm(request.POST)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            # Realiza la autenticación y el inicio de sesión aquí
-            user = authenticate(usuario=request.POST['usuario'], clave=request.POST['clave'])
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                print("Inicio de sesión exitoso")
                 return redirect('app1:index')
-            else:
-                print("Inicio de sesión fallido")
     else:
-        form = CustomLoginForm()
-
+        form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
 
 
-@login_required
+
+
+
 def menu(request):
     return render(request, 'menu.html')
 
-@login_required
+
 def fruta(request):
     if request.method == 'POST':
         mi_formulario = Frutaform(request.POST)
@@ -73,19 +80,19 @@ def fruta(request):
     
     return render(request, 'fruta.html')
 
-@login_required
+
 def leer_fruta(request):
     compra_fruta = Fruta.objects.last()  # Obtiene el último registro
     return render(request, 'leer_fruta.html', {'compra_fruta': compra_fruta})
 
-@login_required
+
 def eliminar_fruta(request, fruta_id):
     fruta = Fruta.objects.get(pk=fruta_id)
     fruta.delete()
     messages.success(request, 'Se ha eliminado la compra.')
     return redirect('app1:fruta')
 
-@login_required
+
 def editar_fruta(request, fruta_id):
     f = Fruta.objects.get(pk=fruta_id)
     if request.method == "POST":

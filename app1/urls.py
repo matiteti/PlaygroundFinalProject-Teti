@@ -4,12 +4,10 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('index/', views.index, name='index'),
     path('fruta/', views.fruta, name='fruta'),
     path('panaderia/', views.panaderia, name='panaderia'),
     path('carniceria/', views.carniceria, name='carniceria'),
-    path('menu/', views.menu, name='menu'),
-    path('intro/', views.intro, name='intro'),
     path('buscar-por-fruta/', views.buscar_fruta_por_id, name='buscar_fruta_por_id'),
     path('buscar-por-carne/', views.buscar_carne_por_id, name='buscar_carne_por_id'),
     path('buscar-por-pan/', views.buscar_pan_por_id, name='buscar_pan_por_id'),
@@ -23,5 +21,5 @@ urlpatterns = [
     path('eliminar_pan/<pan_id>/', views.eliminar_pan, name='eliminar_pan'),
     path('editar_pan/<pan_id>/', views.editar_pan, name='editar_pan'),
     path('register/', views.register, name='register'),
-    path('login/', views.custom_login, name='login'),
+    path('login/', views.user_login, name='login'),
 ]

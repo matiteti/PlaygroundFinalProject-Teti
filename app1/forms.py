@@ -33,5 +33,5 @@ class CustomLoginForm(AuthenticationForm):
     pass
 
 class CustomUserRegistrationForm(forms.Form):
-    usuario = forms.EmailField()
-    clave = forms.CharField(widget=forms.PasswordInput)
+    username = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
