@@ -1,13 +1,9 @@
 from django import forms
-from .models import Ingreso,Fruta,Carniceria,Panaderia
+from .models import Fruta,Carniceria,Panaderia
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import AuthenticationForm
 
-
-class Ingresoform(forms.ModelForm):
-    class Meta:
-        model = Ingreso
-        fields = '__all__'
 
 class Frutaform(forms.ModelForm):
     class Meta:
@@ -33,3 +29,9 @@ class CustomUserCreationForm(UserCreationForm):
         model = get_user_model()
         fields = UserCreationForm.Meta.fields 
 
+class CustomLoginForm(AuthenticationForm):
+    pass
+
+class CustomUserRegistrationForm(forms.Form):
+    usuario = forms.EmailField()
+    clave = forms.CharField(widget=forms.PasswordInput)

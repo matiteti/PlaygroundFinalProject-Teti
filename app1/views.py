@@ -3,7 +3,9 @@ from .models import *
 from django.contrib import messages
 from .forms import *
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
+from .forms import CustomLoginForm  
+from .forms import CustomUserRegistrationForm
+from django.contrib.auth import authenticate, login
 
 
 
@@ -19,21 +21,38 @@ def intro(request):
 
 def register(request):
     if request.method == 'POST':
-        form = Ingresoform(request.POST)
+        form = CustomUserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Usuario creado exitosamente.')
-            return redirect('app1:intro')
+            usuario = form.cleaned_data['usuario']
+            clave = form.cleaned_data['clave']
+            # Crea un nuevo usuario en la base de datos
+            usuario = Usuario.objects.create(usuario=usuario, clave=clave)
+            # Realiza cualquier otra acción necesaria
+            return redirect('app1:login')  # Redirige a la página de inicio de sesión
     else:
-        form = Ingresoform
-    return render(request, 'register.html', {'form':form})
+        form = CustomUserRegistrationForm()
+    return render(request, 'register.html', {'form': form})
 
-@login_required
-def login(request):
+
+
+def custom_login(request):
     if request.method == 'POST':
-        return redirect('app1:menu')
+        form = CustomLoginForm(request.POST)
+        if form.is_valid():
+            # Realiza la autenticación y el inicio de sesión aquí
+            user = authenticate(usuario=request.POST['usuario'], clave=request.POST['clave'])
+            if user is not None:
+                login(request, user)
+                print("Inicio de sesión exitoso")
+                return redirect('app1:index')
+            else:
+                print("Inicio de sesión fallido")
+    else:
+        form = CustomLoginForm()
 
-    return render(request, 'login.html')
+    return render(request, 'login.html', {'form': form})
+
+
 
 @login_required
 def menu(request):

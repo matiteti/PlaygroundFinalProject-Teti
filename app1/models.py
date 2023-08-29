@@ -1,12 +1,14 @@
 from django.db import models
 # Create your models here.
 
-class Ingreso(models.Model):
-    usuario = models.CharField(max_length=100)
-    clave = models.CharField(max_length=100)
+class Usuario(models.Model):
+    usuario = models.EmailField()
+    clave = models.CharField(max_length=128)
+    # Otros campos adicionales que puedas necesitar
 
     def __str__(self):
-        return self.usuario
+        return f"{self.usuario}"
+
 
 class Fruta(models.Model):
     id = models.AutoField(primary_key=True)

@@ -1,22 +1,10 @@
 {% extends 'index.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Bienvenido al Mercado MT</title>
-</head>
-<body>
-    <h1>Ingrese sus datos</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="usuario">Usuario:</label>
-        <input type="text" name="usuario" required>
-        <br>
-        <label for="clave">Clave:</label>
-        <input type="password" name="clave" required>
-        <br>
-        <button type="submit">Ingresar</button>
-    </form>
-</body>
-</html>
+<h2>Iniciar Sesión</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Iniciar Sesión</button>
+  </form>
+  <a href="{% url 'app1:register' %}">¿No tienes una cuenta? Regístrate aquí.</a>
 {% endblock %}

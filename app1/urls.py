@@ -1,11 +1,10 @@
 from django.urls import path
 from . import views
-from django.contrib.auth.decorators import login_required
 
 
 
 urlpatterns = [
-    path('index/', views.index, name='index'),
+    path('', views.index, name='index'),
     path('fruta/', views.fruta, name='fruta'),
     path('panaderia/', views.panaderia, name='panaderia'),
     path('carniceria/', views.carniceria, name='carniceria'),
@@ -24,6 +23,5 @@ urlpatterns = [
     path('eliminar_pan/<pan_id>/', views.eliminar_pan, name='eliminar_pan'),
     path('editar_pan/<pan_id>/', views.editar_pan, name='editar_pan'),
     path('register/', views.register, name='register'),
-    path('login/', views.login, name='login'),
-    
+    path('login/', views.custom_login, name='login'),
 ]
