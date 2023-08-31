@@ -2,77 +2,54 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.contrib import messages
 from .forms import *
-from .forms import CustomUserRegistrationForm
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from .forms import EmailAuthenticationForm, UserEditForm
 
 
-
-
-# Create your views here.
-
+@login_required(login_url='app1:login')
 def index(request):
     return render(request, 'index.html')
 
 
-def intro(request):
-    return render(request, 'intro.html')
-
-def register(request):
+def registro(request):
     if request.method == 'POST':
-        form = CustomUserRegistrationForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-
-            # Verifica si ya existe un usuario con el mismo correo electrónico
-            if Usuario.objects.filter(username=username).exists():
-                error_message = "El correo ya se encuentra registrado. Por favor, ingresa otro."
-                return render(request, 'register.html', {'form': form, 'error_message': error_message})
-
-            # Si no existe, crea un nuevo usuario en la base de datos
-            user = Usuario.objects.create(username=username, password=password)
-            user.save()
-            messages.success(request, 'Se ha creado el usuario.')
-
-            return redirect('app1:login')  # Redirige a la página de inicio de sesión
+            user = form.save()
+            login(request, user) 
+            messages.success(request, f'Se ha creado el usuario {user.get_full_name()}!.')
+            return redirect('app1:login')  # Cambia esto a la URL correcta
     else:
-        form = CustomUserRegistrationForm()
-    return render(request, 'register.html', {'form': form})
+        form = UserRegistrationForm()
+    return render(request, 'registro.html', {'form': form})
 
 
-
-
-def user_login(request):
+def login_request(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = EmailAuthenticationForm(data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('app1:index')
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f'Bienvenido {user.get_full_name()}!.')
+            return redirect('app1:index')  # Cambia esto a la URL correcta
     else:
-        form = AuthenticationForm()
+        form = EmailAuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
 
+@login_required(login_url='app1:login')
 def user_logout(request):
     logout(request)
-    return redirect('blog:index') 
+    return redirect('app1:index') 
 
-
-
-def menu(request):
-    return render(request, 'menu.html')
-
-
+@login_required(login_url='app1:login')
 def fruta(request):
     if request.method == 'POST':
         mi_formulario = Frutaform(request.POST)
         if mi_formulario.is_valid():
             informacion = mi_formulario.cleaned_data
-            fruta = Fruta(fruta=informacion['fruta'], cantidad=informacion['cantidad'], peso=informacion['peso'])
+            fruta = Fruta(usuario=request.user, fruta=informacion['fruta'], cantidad=informacion['cantidad'], peso=informacion['peso'])
             fruta.save()
             return redirect('app1:leer_fruta')
         else:
@@ -81,19 +58,20 @@ def fruta(request):
     
     return render(request, 'fruta.html')
 
-
+@login_required(login_url='app1:login')
 def leer_fruta(request):
     compra_fruta = Fruta.objects.last()  # Obtiene el último registro
-    return render(request, 'leer_fruta.html', {'compra_fruta': compra_fruta})
+    user = request.user
+    return render(request, 'leer_fruta.html', {'compra_fruta': compra_fruta, 'user': user})
 
-
+@login_required(login_url='app1:login')
 def eliminar_fruta(request, fruta_id):
     fruta = Fruta.objects.get(pk=fruta_id)
     fruta.delete()
     messages.success(request, 'Se ha eliminado la compra.')
     return redirect('app1:fruta')
 
-
+@login_required(login_url='app1:login')
 def editar_fruta(request, fruta_id):
     f = Fruta.objects.get(pk=fruta_id)
     if request.method == "POST":
@@ -117,40 +95,47 @@ def editar_fruta(request, fruta_id):
 
     return render(request, "editar_fruta.html", {"mi_formulario": mi_formulario})
 
+@login_required(login_url='app1:login')
 def panaderia(request):
     if request.method == 'POST':
-        pan = request.POST.get('pan')
-        cantidad = request.POST.get('cantidad')
-        peso = request.POST.get('peso')
-        compra = Panaderia(pan=pan, cantidad=cantidad, peso=peso)
-        compra.save()
-        return redirect('app1:leer_panaderia')
-
+        mi_formulario = Panaderiaform(request.POST)
+        if mi_formulario.is_valid():
+            informacion = mi_formulario.cleaned_data
+            fruta = Panaderia(usuario=request.user, pan=informacion['pan'], cantidad=informacion['cantidad'], peso=informacion['peso'])
+            fruta.save()
+            return redirect('app1:leer_panaderia')
+        else:
+            mi_formulario = Panaderiaform()
+        return render(request, 'panaderia.html', {'mi_formulario': mi_formulario})
+    
     return render(request, 'panaderia.html')
 
-
+@login_required(login_url='app1:login')
 def lista_panaderia(request):
     compra_pan = Panaderia.objects.last()  # Obtiene el último registro
     return render(request, 'lista_panaderia.html', {'compra_pan': compra_pan})
 
-
+@login_required(login_url='app1:login')
 def carniceria(request):
     if request.method == 'POST':
-        carne = request.POST.get('carne')
-        cantidad = request.POST.get('cantidad')
-        peso = request.POST.get('peso')
-        compra = Carniceria(carne=carne, cantidad=cantidad, peso=peso)
-        compra.save()
-        return redirect('app1:leer_carne')
-
+        mi_formulario = Carniceriaform(request.POST)
+        if mi_formulario.is_valid():
+            informacion = mi_formulario.cleaned_data
+            fruta = Carniceria(usuario=request.user, carne=informacion['carne'], cantidad=informacion['cantidad'], peso=informacion['peso'])
+            fruta.save()
+            return redirect('app1:leer_carne')
+        else:
+            mi_formulario = Panaderiaform()
+        return render(request, 'carniceria.html', {'mi_formulario': mi_formulario})
+    
     return render(request, 'carniceria.html')
 
-
+@login_required(login_url='app1:login')
 def lista_carniceria(request):
     compra_carne = Carniceria.objects.last()  # Obtiene el último registro
     return render(request, 'lista_carniceria.html', {'compra_carne': compra_carne})
 
-
+@login_required(login_url='app1:login')
 def buscar_fruta_por_id(request):
     elementos = []
     form = BusquedaForm(request.GET)
@@ -164,7 +149,7 @@ def buscar_fruta_por_id(request):
 
     return render(request, 'buscar_fruta.html', {'form': form, 'elementos': elementos})
 
-
+@login_required(login_url='app1:login')
 def buscar_carne_por_id(request):
     elementos = []
     form = BusquedaForm(request.GET)
@@ -178,7 +163,7 @@ def buscar_carne_por_id(request):
 
     return render(request, 'buscar_carne.html', {'form': form, 'elementos': elementos})
 
-
+@login_required(login_url='app1:login')
 def buscar_pan_por_id(request):
     elementos = []
     form = BusquedaForm(request.GET)
@@ -192,20 +177,19 @@ def buscar_pan_por_id(request):
 
     return render(request, 'buscar_pan.html', {'form': form, 'elementos': elementos})
 
-
-
+@login_required(login_url='app1:login')
 def leer_carne(request):
     compra_carne = Carniceria.objects.last()  # Obtiene el último registro
     return render(request, 'leer_carne.html', {'compra_carne': compra_carne})
 
-
+@login_required(login_url='app1:login')
 def eliminar_carne(request, carne_id):
     carne = Carniceria.objects.get(pk=carne_id)
     carne.delete()
     messages.success(request, 'Se ha eliminado la compra.')
     return redirect('app1:carniceria')
 
-
+@login_required(login_url='app1:login')
 def editar_carne(request, carne_id):
     c = Carniceria.objects.get(pk=carne_id)
     if request.method == "POST":
@@ -229,19 +213,19 @@ def editar_carne(request, carne_id):
 
     return render(request, "editar_carne.html", {"mi_formulario": mi_formulario})
 
-
+@login_required(login_url='app1:login')
 def leer_panaderia(request):
     compra_pan = Panaderia.objects.last()  # Obtiene el último registro
     return render(request, 'leer_panaderia.html', {'compra_pan': compra_pan})
 
-
+@login_required(login_url='app1:login')
 def eliminar_pan(request, pan_id):
     pan = Panaderia.objects.get(pk=pan_id)
     pan.delete()
     messages.success(request, 'Se ha eliminado la compra.')
     return redirect('app1:panaderia')
 
-
+@login_required(login_url='app1:login')
 def editar_pan(request, pan_id):
     p = Panaderia.objects.get(pk=pan_id)
     if request.method == "POST":
@@ -265,6 +249,35 @@ def editar_pan(request, pan_id):
 
     return render(request, "editar_pan.html", {"mi_formulario": mi_formulario})
 
-
+@login_required(login_url='app1:login')
 def acerca(request):
     return render(request, 'acerca.html')
+
+
+@login_required(login_url='app1:login')
+def editarPerfil(request):
+    user = request.user
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, request.FILES , instance=user)
+        if form.is_valid():
+            new_password = form.cleaned_data.get('password')
+            if new_password:
+                user.set_password(new_password)
+            form.save()
+            return redirect('app1:index')  # Cambia esto a la URL del perfil
+    else:
+        form = UserEditForm(instance=user)
+    return render(request, 'editarperfil.html', {'form': form})
+
+
+@login_required(login_url='app1:login')
+def compras(request):
+    user = request.user
+    compras_fruta = Fruta.objects.filter(usuario=user)
+    compras_panaderia = Panaderia.objects.filter(usuario=user)
+    compras_carniceria = Carniceria.objects.filter(usuario=user)
+    return render(request, 'compras.html', {
+        'compras_fruta': compras_fruta,
+        'compras_panaderia': compras_panaderia,
+        'compras_carniceria': compras_carniceria
+    })

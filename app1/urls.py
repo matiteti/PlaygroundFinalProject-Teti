@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
+from django.contrib.auth.views import LogoutView
 
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -8,9 +11,6 @@ urlpatterns = [
     path('fruta/', views.fruta, name='fruta'),
     path('panaderia/', views.panaderia, name='panaderia'),
     path('carniceria/', views.carniceria, name='carniceria'),
-    path('buscar-por-fruta/', views.buscar_fruta_por_id, name='buscar_fruta_por_id'),
-    path('buscar-por-carne/', views.buscar_carne_por_id, name='buscar_carne_por_id'),
-    path('buscar-por-pan/', views.buscar_pan_por_id, name='buscar_pan_por_id'),
     path('leer_fruta/', views.leer_fruta, name='leer_fruta'),
     path('eliminar_fruta/<fruta_id>/', views.eliminar_fruta, name='eliminar_fruta'),
     path('editar_fruta/<fruta_id>/', views.editar_fruta, name='editar_fruta'),
@@ -20,8 +20,12 @@ urlpatterns = [
     path('leer_panaderia/', views.leer_panaderia, name='leer_panaderia'),
     path('eliminar_pan/<pan_id>/', views.eliminar_pan, name='eliminar_pan'),
     path('editar_pan/<pan_id>/', views.editar_pan, name='editar_pan'),
-    path('register/', views.register, name='register'),
-    path('login/', views.user_login, name='login'),
-    path('logout/', views.user_logout, name='logout'),
-    path('acerca/', views.acerca, name='acerca'),  
+    path('registro/', views.registro, name='registro'),
+    path('login/', views.login_request, name='login'),
+    path('acerca/', views.acerca, name='acerca'), 
+    path('compras/', views.compras, name='compras'), 
+    path('editarperfil/', views.editarPerfil, name='editarperfil'),
+    path('logout/', LogoutView.as_view(template_name='logout.html'), name='logout')
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

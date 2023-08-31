@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+{% block content %}
+<h2>Editar Perfil</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if user.avatar %}
+    <p>Avatar actual:</p>
+    <img src="{{ user.avatar.image.url }}" alt="Avatar" width="100">
+  {% endif %}
+    <button type="submit">Guardar Cambios</button>
+  </form>
+
+{% endblock %}

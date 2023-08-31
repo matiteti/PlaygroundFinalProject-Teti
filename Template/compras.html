@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+{% block content %}
+<h1>Historial de Compras</h1>
+
+<h2>Compras de Fruta</h2>
+{% if compras_fruta %}
+<ul>
+    {% for compra in compras_fruta %}
+    <li>
+        Fruta: {{ compra.fruta }} - Cantidad: {{ compra.cantidad }} - Peso: {{ compra.peso }}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No tienes compras de fruta registradas.</p>
+{% endif %}
+
+<h2>Compras de Panadería</h2>
+{% if compras_panaderia %}
+<ul>
+    {% for compra in compras_panaderia %}
+    <li>
+        Producto: {{ compra.pan }} / Cantidad: {{ compra.cantidad }} / Peso: {{ compra.peso }}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No tienes compras de panadería registradas.</p>
+{% endif %}
+
+<h2>Compras de Carnicería</h2>
+{% if compras_carniceria %}
+<ul>
+    {% for compra in compras_carniceria %}
+    <li>
+        Carne: {{ compra.carne }} - Cantidad: {{ compra.cantidad }} - Peso: {{ compra.peso }}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No tienes compras de carnicería registradas.</p>
+{% endif %}
+
+<a href="{% url 'app1:index' %}" class="btn btn-secondary">Volver</a>
+{% endblock %}

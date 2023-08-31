@@ -1,24 +1,20 @@
 {% extends 'index.html' %}
 {% block content %}
 <h2>Iniciar Sesión</h2>
-  <form method="post">
+  <form action="" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
+      {{ form.as_p }}
     {% if form.errors %}
     <p style="color: red;" class="error-message">Usuario o contraseña incorrectos. Por favor, intenta nuevamente.</p>
      {% endif %}
-
-    {% if messages %}
-
-        {% for message in messages %}
-        <div class="notification {{message.tags}}">
-            {{ message }}
-        </div>
-        {% endfor %}
-
-    {% endif %}
+     
+     {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+     {% endfor %}
+   
     <button type="submit" id="submit">Iniciar Sesión</button>
   </form>
+
  
-  <a href="{% url 'app1:register' %}">¿No tienes una cuenta? Regístrate aquí.</a>
+  <a href="{% url 'app1:registro' %}">¿No tienes una cuenta? Regístrate aquí.</a>
 {% endblock %}

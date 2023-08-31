@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Template Matias Teti</title>
+        <title>PlaygroundFinalProject+Teti</title>
         <!-- Favicon-->
         <link rel="icon" type=  "image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -17,11 +17,29 @@
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
     <body>
+        
         <!-- Navigation-->
         <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
                 <a href="{% url 'app1:index' %}" class="btn btn-secondary">Inicio</a>
-                <a href="{% url 'app1:acerca' %}" class="btn btn-secondary">Acerca de</a>
+                {% if not request.user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'app1:login' %}">Iniciar Sesion</a>
+                <a class="btn btn-primary" href="{% url 'app1:registro' %}">Registrarse</a>
+                {% else %}
+                <div class="navbar-brand">
+                    <a href="{% url 'app1:editarperfil' %}">
+                        {% if request.user.avatar %}
+                        <img src="{{ request.user.avatar.image.url }}" alt="Avatar" height="48px">
+                        {% else %}
+                        {{ request.user.username }}
+                        {% endif %}
+                    </a>
+                    <a class="btn btn-primary" href="{% url 'app1:logout' %}">Cerrar Sesion</a>
+                </div>
+                {% endif %}
+                {% if request.user.avatar %}
+                <img src="{{request.user.avatar.imagen.url}}" alt="" height="48px">
+                {% endif %}
             </div>
         </nav>
         <!-- Masthead-->
@@ -31,7 +49,7 @@
                     <div class="col-xl-6">
                         <div class="text-center text-white">
                             <!-- Page heading-->
-                            <h1 class="mb-5">MiPrimerTemplate+Teti</h1>
+                            <h1 class="mb-5">PlaygroundFinalProject+Teti</h1>
                             <!-- Signup form-->
                             <!-- * * * * * * * * * * * * * * *-->
                             <!-- * * SB Forms Contact Form * *-->
@@ -50,27 +68,35 @@
         
         <!-- Image Showcases-->
         
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         
+
         <section class="features-icons bg-light text-center">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-window m-auto text-primary"></i></div>
+                            
                             <h3>Carniceria</h3>
                             <a href="{% url 'app1:carniceria' %}" class="btn btn-secondary">Carniceria</a> 
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
+                            
                             <h3>Fruteria</h3>
                             <a href="{% url 'app1:fruta' %}" class="btn btn-secondary">Fruteria</a>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-terminal m-auto text-primary"></i></div>
+                            
                             <h3>Panaderia</h3>
                             <a href="{% url 'app1:panaderia' %}" class="btn btn-secondary">Panaderia</a>
                         </div>
@@ -81,9 +107,13 @@
         <br>
         <br>
         <br>
-        <a href="{% url 'app1:buscar_fruta_por_id' %}" class="btn btn-primary">Buscar OP de Fruteria</a>
-        <a href="{% url 'app1:buscar_carne_por_id' %}" class="btn btn-primary">Buscar OP de Carniceria</a>
-        <a href="{% url 'app1:buscar_pan_por_id' %}" class="btn btn-primary">Buscar OP de Panaderia</a>
+        <a href="{% url 'app1:compras' %}" class="btn btn-primary">Ver el historial de compras</a>
     </body>
+    <footer class="footer bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
+                    <ul class="list-inline mb-2">
+                        <li class="list-inline-item"><a href="{% url 'app1:acerca' %}">Acerca de mi Página</a></li>
     {% endblock %}
 </html>
