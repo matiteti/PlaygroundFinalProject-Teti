@@ -19,7 +19,7 @@ def registro(request):
             user = form.save()
             login(request, user) 
             messages.success(request, f'Se ha creado el usuario {user.get_full_name()}!.')
-            return redirect('app1:login')  # Cambia esto a la URL correcta
+            return redirect('app1:index')  # Cambia esto a la URL correcta
     else:
         form = UserRegistrationForm()
     return render(request, 'registro.html', {'form': form})
