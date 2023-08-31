@@ -29,7 +29,7 @@
                 <div class="navbar-brand">
                     <a href="{% url 'app1:editarperfil' %}">
                         {% if request.user.avatar %}
-                        <img src="{{ request.user.avatar.image.url }}" alt="Avatar" height="48px">
+                        <img src="{{ user.avatar.image.url }}" alt="Avatar" height="48px">
                         {% else %}
                         {{ request.user.username }}
                         {% endif %}
@@ -38,7 +38,7 @@
                 </div>
                 {% endif %}
                 {% if request.user.avatar %}
-                <img src="{{request.user.avatar.imagen.url}}" alt="" height="48px">
+                <img src="{{request.user.avatar.url}}" alt="" height="48px">
                 {% endif %}
             </div>
         </nav>
