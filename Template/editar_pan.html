@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+{% block content %}
+
+    {% if mi_formulario.errors %}
+
+    <p style="color: red;"> Estan mal los datos, revisar</p>
+
+    {% endif %}
+
+    <form action="" method="POST">{% csrf_token %}
+
+        <table>
+
+            {{ mi_formulario.as_table}}
+
+        </table>
+
+        <input type="submit", value="Enviar">
+
+    </form>
+
+{% endblock %}
