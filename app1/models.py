@@ -59,6 +59,7 @@ class Fruta(models.Model):
     fruta = models.CharField(max_length=100)
     cantidad = models.IntegerField()
     peso = models.CharField(max_length=100, default="0.0")
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.id} - {self.usuario}"
@@ -69,6 +70,7 @@ class Carniceria(models.Model):
     carne = models.CharField(max_length=100)
     cantidad = models.IntegerField()
     peso = models.CharField(max_length=100, default="0.0")
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.id} - {self.usuario}"
@@ -79,6 +81,7 @@ class Panaderia(models.Model):
     pan = models.CharField(max_length=100)
     cantidad = models.IntegerField()    
     peso = models.CharField(max_length=100, default="0.0") 
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"{self.id} - {self.usuario}"
 

@@ -13,8 +13,9 @@
         <li>Cantidad: {{ compra_carne.cantidad }}</li>
         <li>Peso: {{ compra_carne.peso }}</li>
         <li>Orden de Compra: {{ compra_carne.id }}</li>
+        <li>Fecha de Compra: {{ compra_carne.fecha_creacion|date:"d/m/Y" }}</li>
     </ul>
-    <p>Hora actual: {% now "H:i:s" %}</p>
+    
     <a href="{% url 'app1:carniceria' %}" class="btn btn-secondary">Realizar otra compra</a>
     <a href="{% url 'app1:eliminar_carne' compra_carne.id %}" class="btn btn-secondary">Eliminar</a>
     <a href="{% url 'app1:editar_carne' compra_carne.id %}" class="btn btn-secondary">Editar</a>

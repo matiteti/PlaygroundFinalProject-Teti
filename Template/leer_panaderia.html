@@ -13,8 +13,9 @@
         <li>Cantidad: {{ compra_pan.cantidad }}</li>
         <li>Peso: {{ compra_pan.peso }}</li>
         <li>Orden de Compra: {{ compra_pan.id }}</li>
+        <li>Fecha de Compra: {{ compra_pan.fecha_creacion|date:"d/m/Y" }}</li>
     </ul>
-    <p>Hora actual: {% now "H:i:s" %}</p>
+    
     <a href="{% url 'app1:panaderia' %}" class="btn btn-secondary">Realizar otra compra</a>
     <a href="{% url 'app1:eliminar_pan' compra_pan.id %}" class="btn btn-secondary">Eliminar</a>
     <a href="{% url 'app1:editar_pan' compra_pan.id %}" class="btn btn-secondary">Editar</a>

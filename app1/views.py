@@ -5,6 +5,7 @@ from .forms import *
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import EmailAuthenticationForm, UserEditForm
+from datetime import datetime
 
 
 @login_required(login_url='app1:login')
@@ -50,6 +51,7 @@ def fruta(request):
         if mi_formulario.is_valid():
             informacion = mi_formulario.cleaned_data
             fruta = Fruta(usuario=request.user, fruta=informacion['fruta'], cantidad=informacion['cantidad'], peso=informacion['peso'])
+            fruta.fecha_creacion = datetime.now()  # Establece la fecha y hora de creación
             fruta.save()
             return redirect('app1:leer_fruta')
         else:
@@ -101,8 +103,9 @@ def panaderia(request):
         mi_formulario = Panaderiaform(request.POST)
         if mi_formulario.is_valid():
             informacion = mi_formulario.cleaned_data
-            fruta = Panaderia(usuario=request.user, pan=informacion['pan'], cantidad=informacion['cantidad'], peso=informacion['peso'])
-            fruta.save()
+            pan = Panaderia(usuario=request.user, pan=informacion['pan'], cantidad=informacion['cantidad'], peso=informacion['peso'])
+            pan.fecha_creacion = datetime.now()  # Establece la fecha y hora de creación
+            pan.save()
             return redirect('app1:leer_panaderia')
         else:
             mi_formulario = Panaderiaform()
@@ -121,8 +124,9 @@ def carniceria(request):
         mi_formulario = Carniceriaform(request.POST)
         if mi_formulario.is_valid():
             informacion = mi_formulario.cleaned_data
-            fruta = Carniceria(usuario=request.user, carne=informacion['carne'], cantidad=informacion['cantidad'], peso=informacion['peso'])
-            fruta.save()
+            carne = Carniceria(usuario=request.user, carne=informacion['carne'], cantidad=informacion['cantidad'], peso=informacion['peso'])
+            carne.fecha_creacion = datetime.now()
+            carne.save()
             return redirect('app1:leer_carne')
         else:
             mi_formulario = Panaderiaform()
