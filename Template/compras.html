@@ -7,7 +7,7 @@
 <ul>
     {% for compra in compras_fruta %}
     <li>
-        Fruta: {{ compra.fruta }} / Cantidad: {{ compra.cantidad }} / Peso: {{ compra.peso }} / Fecha: {{ compra_fruta.fecha_creacion|date:"d/m/Y" }}
+        Fruta: {{ compra.fruta }} / Cantidad: {{ compra.cantidad }} / Peso: {{ compra.peso }} / Fecha: {{ compra.fecha_creacion|date:"d/m/Y H:i:s" }}
     </li>
     {% endfor %}
 </ul>
@@ -20,7 +20,7 @@
 <ul>
     {% for compra in compras_panaderia %}
     <li>
-        Producto: {{ compra.pan }} / Cantidad: {{ compra.cantidad }} / Peso: {{ compra.peso }} / Fecha: {{ compra_pan.fecha_creacion|date:"d/m/Y" }} 
+        Producto: {{ compra.pan }} / Cantidad: {{ compra.cantidad }} / Peso: {{ compra.peso }} / Fecha: {{ compra.fecha_creacion|date:"d/m/Y H:i:s" }} 
     </li>
     {% endfor %}
 </ul>
@@ -33,7 +33,7 @@
 <ul>
     {% for compra in compras_carniceria %}
     <li>
-        Carne: {{ compra.carne }} / Cantidad: {{ compra.cantidad }} / Peso: {{ compra.peso }} / Fecha: {{ compra_carne.fecha_creacion|date:"d/m/Y" }}
+        Carne: {{ compra.carne }} / Cantidad: {{ compra.cantidad }} / Peso: {{ compra.peso }} / Fecha: {{ compra.fecha_creacion|date:"d/m/Y H:i:s" }}
     </li>
     {% endfor %}
 </ul>
