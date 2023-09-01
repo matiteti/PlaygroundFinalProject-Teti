@@ -62,7 +62,8 @@ class Fruta(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.id} - {self.usuario}"
+        fecha_hora_creacion = self.fecha_creacion.strftime("%d/%m/%Y %H:%M:%S")
+        return f"{self.id} - {self.usuario} - Fecha de Creación: {fecha_hora_creacion}"
 
 class Carniceria(models.Model):
     id = models.AutoField(primary_key=True)
@@ -73,7 +74,8 @@ class Carniceria(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.id} - {self.usuario}"
+        fecha_hora_creacion = self.fecha_creacion.strftime("%d/%m/%Y %H:%M:%S")
+        return f"{self.id} - {self.usuario} - Fecha de Creación: {fecha_hora_creacion}"
 
 class Panaderia(models.Model):
     id = models.AutoField(primary_key=True)
@@ -83,7 +85,8 @@ class Panaderia(models.Model):
     peso = models.CharField(max_length=100, default="0.0") 
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return f"{self.id} - {self.usuario}"
+        fecha_hora_creacion = self.fecha_creacion.strftime("%d/%m/%Y %H:%M:%S")
+        return f"{self.id} - {self.usuario} - Fecha de Creación: {fecha_hora_creacion}"
 
 class Avatar(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
